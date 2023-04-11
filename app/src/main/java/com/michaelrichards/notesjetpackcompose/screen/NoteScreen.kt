@@ -1,5 +1,6 @@
 package com.michaelrichards.notesjetpackcompose.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,9 @@ import com.michaelrichards.notesjetpackcompose.components.NoteInputText
 import com.michaelrichards.notesjetpackcompose.data.NotesDataSource
 import com.michaelrichards.notesjetpackcompose.model.Note
 import java.time.format.DateTimeFormatter
+
+
+private const val TAG = "NoteScreen"
 
 @Composable
 fun NoteScreen(
@@ -85,7 +89,7 @@ fun NoteScreen(
         Divider(modifier = Modifier.padding(10.dp))
         LazyColumn {
             items(notes) { note ->
-                    NoteRow(note = note, onNoteClicked = {removeNote(note)})
+                    NoteRow(note = note, onNoteClicked = { removeNote(note)}, modifier = Modifier.padding(5.dp))
             }
         }
     }
@@ -97,19 +101,20 @@ fun NoteRow(modifier: Modifier = Modifier, note: Note, onNoteClicked: (Note) -> 
     Surface(
         modifier = modifier
             .clip(RoundedCornerShape(topEnd = 33.dp, bottomStart = 33.dp))
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(5.dp),
         color = Color(0xFFFA8181),
         elevation = 10.dp
     ) {
         Column(
             modifier = Modifier
-                .clickable {onNoteClicked(note) }
-                .padding(horizontal = 14.dp, vertical = 6.dp),
+                .clickable { onNoteClicked(note) }
+                .padding(horizontal = 14.dp, vertical = 10.dp),
             horizontalAlignment = Alignment.Start
         ) {
-                Text(text = note.title, style = MaterialTheme.typography.subtitle2)
+                Text(text = note.title, style = MaterialTheme.typography.h5)
                 Text(text = note.description, style = MaterialTheme.typography.subtitle1)
-                Text(text = note.entryDateTimeStamp.format(DateTimeFormatter.ofPattern("EEE, d MMM")), style = MaterialTheme.typography.caption)
+                Text(text = note.entryDateTimeStamp.format(DateTimeFormatter.ofPattern("EEE MMMM dd, yyyy")), style = MaterialTheme.typography.caption)
         }
     }
 }
