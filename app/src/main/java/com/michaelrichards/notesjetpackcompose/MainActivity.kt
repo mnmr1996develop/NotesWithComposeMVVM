@@ -1,27 +1,22 @@
 package com.michaelrichards.notesjetpackcompose
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.michaelrichards.notesjetpackcompose.data.NotesDataSource
-import com.michaelrichards.notesjetpackcompose.model.Note
 import com.michaelrichards.notesjetpackcompose.screen.NoteScreen
-import com.michaelrichards.notesjetpackcompose.screen.NoteScreenPreview
 import com.michaelrichards.notesjetpackcompose.screen.NoteViewModel
 import com.michaelrichards.notesjetpackcompose.ui.theme.NotesJetpackComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "MainActivity"
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +36,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NotesApp(noteViewModel: NoteViewModel = viewModel()) {
 
-    val notesList = noteViewModel.getAllNote()
+    val notesList = noteViewModel.noteList.collectAsState().value
 
-    NoteScreen(notes = notesList, removeNote = {noteViewModel.remove(note = it)}, addNote = {noteViewModel.addNote(it)})
+    NoteScreen(notes = notesList, removeNote = {noteViewModel.remove(it)}, addNote = {noteViewModel.addNote(it)})
 }
 
