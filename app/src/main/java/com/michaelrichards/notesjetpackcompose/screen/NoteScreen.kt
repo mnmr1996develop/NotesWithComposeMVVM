@@ -22,7 +22,6 @@ import com.michaelrichards.notesjetpackcompose.R
 import com.michaelrichards.notesjetpackcompose.components.NoteButton
 import com.michaelrichards.notesjetpackcompose.components.NoteInputText
 import com.michaelrichards.notesjetpackcompose.model.Note
-import java.time.format.DateTimeFormatter
 
 
 private const val TAG = "NoteScreen"
@@ -83,7 +82,8 @@ private fun AddToNotes(
         NoteInputText(
             text = description.value, label = "Add A Note",
             onValChange = {
-                if (it.all { char -> char.isLetter() || char.isWhitespace() }) description.value = it
+                if (it.all { char -> char.isLetter() || char.isWhitespace() }) description.value =
+                    it
             },
             modifier = Modifier.padding(9.dp)
         )
@@ -129,9 +129,13 @@ fun NoteRow(modifier: Modifier = Modifier, note: Note, onNoteClicked: (Note) -> 
                 .padding(horizontal = 14.dp, vertical = 10.dp),
             horizontalAlignment = Alignment.Start
         ) {
-                Text(text = note.title, style = MaterialTheme.typography.h5)
-                Text(text = note.description, style = MaterialTheme.typography.subtitle1)
-               // Text(text = note.entryDateTimeStamp.format(DateTimeFormatter.ofPattern("EEE MMMM dd, yyyy")), style = MaterialTheme.typography.caption)
+            Text(text = note.title, style = MaterialTheme.typography.h5)
+            Text(text = note.description, style = MaterialTheme.typography.subtitle1)
+            /*  Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE MMMM dd, yyyy")), style = MaterialTheme.typography.caption)*/
+            Text(
+                text = note.entryDate.toString(),
+                style = MaterialTheme.typography.caption
+            )
         }
     }
 }
